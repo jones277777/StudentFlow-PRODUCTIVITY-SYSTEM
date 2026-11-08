@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudentFlow | Make Every Study Hour Count</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#3525cd;--primary-2:#4f46e5;--bg:#faf8ff;--surface:#f2f3ff;--surface-hi:#eaedff;--surface-mid:#dae2fd;--ink:#131b2e;--muted:#464555;--mint:#6cf8bb;--mint-ink:#006c49;--mint-deep:#00714d;--amber:#ffddb8;--amber-ink:#684000;--red:#ba1a1a;--red-bg:#ffdad6;--red-ink:#93000a;--lavender:#e2dfff;--radius:16px;--radius-sm:12px;--shadow-sm:0 1px 1px rgba(0,0,0,.05);--shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);--head:'Plus Jakarta Sans',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{font-family:var(--body);color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+ul{list-style:none}
+svg{width:20px;height:20px;flex-shrink:0}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px;width:100%}
+.grow{flex:1;min-width:0}
+.stack{display:flex;flex-direction:column;gap:8px}
+.stack-sm{display:flex;flex-direction:column;gap:6px}
+.muted{color:var(--muted);font-size:14px}
+.muted-sm{color:var(--muted);font-size:13px}
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.text-right{text-align:right}
+.center{text-align:center}
+.c-primary{color:var(--primary)}
+.c-mint-ink{color:var(--mint-deep);font-size:12px;font-weight:600}
+h1,h2,h3,h4,b,strong{font-family:var(--head)}
+h1{font-size:56px;font-weight:800;letter-spacing:-1.68px;line-height:64px;text-align:center}
+h2{font-size:40px;font-weight:700;letter-spacing:-.8px;line-height:48px}
+h3{font-size:18px;font-weight:700;letter-spacing:-.9px;line-height:26px}
+.h2-small{font-size:22px;font-weight:600;letter-spacing:-.22px;line-height:30px;text-align:center}
+.h3-mini{font-size:18px;font-weight:600;letter-spacing:-.9px;display:flex;align-items:center;gap:8px}
+.h3-mini svg{color:var(--primary);width:16px;height:16px}
+.eyebrow{font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:.55px;text-transform:uppercase;color:var(--muted);display:block}
+.eyebrow.red{color:var(--red)}
+.eyebrow.center{text-align:center}
+.lead{font-size:16px;color:var(--muted);line-height:26px;max-width:768px}
+.small-strong{font-family:var(--head);font-size:12px;font-weight:600;display:block}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--head);font-weight:600;font-size:14px;padding:14px 40px;border-radius:12px;border:0;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .15s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.6;cursor:default;transform:none}
+.btn svg{width:14px;height:14px}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 7px rgba(79,70,229,.35)}
+.btn-white{background:#fff;color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn-ghost{background:transparent;color:var(--primary);border:1px solid var(--lavender)}
+.btn-sm{padding:8px 18px;font-size:13px;border-radius:8px}
+.btn-block{width:100%;padding:10px 16px;border-radius:8px;margin-top:auto;font-size:12px}
+.link-btn{font-family:var(--head);font-weight:600;font-size:14px;padding:8px 16px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--head);font-weight:700;font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap;letter-spacing:.3px}
+.chip-red{background:var(--red-bg);color:var(--red-ink)}
+.chip-blue{background:var(--lavender);color:var(--primary)}
+.chip-mint{background:var(--mint);color:var(--mint-deep)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--mint-ink);display:inline-block}
+.tag{font-family:var(--head);font-size:11px;font-weight:700;color:var(--primary);background:var(--lavender);padding:2px 6px;border-radius:999px;letter-spacing:.6px}
+.badge,.tagline{display:inline-flex;align-items:center;gap:6px;font-family:var(--head);font-weight:600;font-size:12px;letter-spacing:.24px;padding:6px 16px;border-radius:999px}
+.badge{background:var(--lavender);color:var(--primary);font-size:11px;font-weight:700;letter-spacing:.55px;text-transform:uppercase;box-shadow:var(--shadow-sm);margin-bottom:24px}
+.badge svg,.tagline svg{width:14px;height:14px}
+.tagline{background:var(--surface-hi);color:var(--ink);margin-top:16px}
+.tagline svg{color:var(--primary)}
+.tagline.mint{background:rgba(108,248,187,.3);color:var(--mint-deep);font-size:11px;letter-spacing:.66px}
+.tagline.mint svg{color:var(--mint-deep)}
+.pill-status{background:var(--surface);font-family:var(--head);font-weight:600;font-size:12px;padding:4px 16px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.pill-status i{width:8px;height:8px;border-radius:50%;background:var(--mint-ink)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center}
+.avatar svg{width:14px;height:14px}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,255,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 1px 8px rgba(0,0,0,.04)}
+.topbar-inner{height:80px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:inline-flex;align-items:center;gap:12px}
+.brand-mark{width:32px;height:32px;border-radius:10px;background:var(--primary);color:#fff;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:12px}
+.brand-text{display:flex;flex-direction:column}
+.brand-text b{font-size:18px;letter-spacing:-.45px;line-height:1.1}
+.brand-text small{font-size:11px;letter-spacing:.55px;color:var(--muted);font-weight:700;font-family:var(--head)}
+.nav{display:flex;gap:4px}
+.nav a{font-family:var(--head);font-weight:600;font-size:14px;color:var(--muted);padding:8px 14px;border-radius:8px;white-space:nowrap}
+.nav a:hover,.footer ul a:hover,.footer-links a:hover{background:var(--surface-hi);color:var(--primary)}
+.top-actions{display:flex;align-items:center;gap:12px}
+section{position:relative}
+.section-white{background:#fff;padding:40px 0}
+.section-soft{background:var(--bg);padding:112px 0}
+.section-lavender{background:var(--surface);padding:112px 0}
+.section-head{display:flex;flex-direction:column;gap:4px;max-width:768px;margin-bottom:40px}
+.section-head h2{margin-top:4px}
+.stats-section{padding:40px 0}
+.stats-head{display:flex;flex-direction:column;gap:4px;align-items:center;margin-bottom:24px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:896px;margin:0 auto}
+.stat-card{background:var(--surface);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:var(--shadow-sm);text-align:center}
+.stat-icon{width:48px;height:48px;border-radius:var(--radius-sm);display:grid;place-items:center;margin-bottom:8px}
+.stat-icon svg{width:22px;height:22px}
+.stat-num{font-size:36px;letter-spacing:-.9px;line-height:44px}
+.stat-label{font-family:var(--head);font-weight:600;font-size:14px}
+.stat-sub{color:var(--muted);font-size:13px}
+.bg-lavender{background:var(--lavender);color:var(--primary)}
+.bg-mint{background:var(--mint);color:var(--mint-deep)}
+.bg-amber{background:var(--amber);color:var(--amber-ink)}
+.bg-red{background:var(--red-bg);color:var(--red)}
+.hero{padding:40px 0 128px;background:linear-gradient(180deg,#faf8ff 0%,#f2f3ff 60%,#faf8ff 100%);overflow:hidden}
+.hero-glow{position:absolute;left:50%;top:2%;width:700px;height:460px;transform:translateX(-50%);background:rgba(226,223,255,.35);filter:blur(64px);border-radius:50%;pointer-events:none}
+.hero-inner{position:relative;display:flex;flex-direction:column;align-items:center}
+.hero-sub{max-width:768px;margin-top:16px;text-align:center;color:var(--muted);font-size:16px;line-height:26px}
+.cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.trust-line{display:flex;align-items:center;gap:6px;margin-top:16px;color:var(--muted);font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.24px}
+.trust-line svg{color:var(--mint-deep);width:14px;height:14px}
+.mockup{margin-top:40px;width:100%;max-width:1024px;background:#fff;border-radius:16px;padding:24px;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.mockup-bar{display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;gap:8px;flex-wrap:wrap}
+.mockup-dots{display:flex;align-items:center;gap:6px}
+.mockup-dots i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.d-red{background:rgba(186,26,26,.7)}.d-amber{background:#ffb95f}.d-mint{background:#6ffbbe}
+.mockup-dots span{margin-left:8px;font-family:var(--head);font-weight:700;font-size:11px;letter-spacing:.55px;color:var(--muted)}
+.mockup-grid{display:grid;grid-template-columns:7fr 5fr;gap:16px;align-items:stretch}
+.mockup-left{display:flex;flex-direction:column;gap:16px}
+.panel{border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.urgent{flex-direction:row;align-items:center;gap:12px}
+.urgent .chip{margin-left:auto}
+.urgent-icon{width:40px;height:40px;border-radius:12px;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex-shrink:0}
+.urgent-icon svg{width:18px;height:18px}
+.class-row{background:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px;border-radius:8px;box-shadow:var(--shadow-sm);gap:8px;position:relative;padding-left:20px}
+.class-row::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:10px;border-radius:999px;background:var(--primary)}
+.class-row.current::before{background:var(--primary)}
+.class-row:not(.current){background:rgba(255,255,255,.6);box-shadow:none}
+.class-row:not(.current)::before{background:var(--mint-ink)}
+.class-row strong{display:block;font-size:14px;font-weight:600}
+.class-row small{display:block;color:var(--muted);font-size:13px}
+.class-row .when{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.time-pill{background:var(--lavender);color:var(--primary);font-family:var(--head);font-weight:700;font-size:12px;padding:4px 8px;border-radius:6px}
+.class-row:not(.current) .time-pill{background:var(--surface-hi);color:var(--muted)}
+.focus{background:var(--lavender);justify-content:space-between}
+.focus-title{font-size:18px;font-weight:600;letter-spacing:-.9px;margin-top:8px}
+.ring-wrap{position:relative;width:144px;height:144px;margin:12px auto 4px}
+.ring{width:144px;height:144px;transform:rotate(-90deg)}
+.ring-track,.ring-fill{fill:none;stroke-width:10}
+.ring-track{stroke:rgba(255,255,255,.6)}
+.ring-fill{stroke:var(--primary);stroke-linecap:round;stroke-dasharray:402.1;stroke-dashoffset:72.4;transition:stroke-dashoffset .5s}
+.ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-label b{font-size:22px}
+.ring-label small{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.66px}
+.goal-pill{align-self:center;background:#fff;box-shadow:var(--shadow-sm);padding:4px 16px;border-radius:999px;font-family:var(--head);font-weight:600;font-size:12px;display:inline-flex;align-items:center;gap:6px}
+.goal-pill svg{width:14px;height:14px;color:var(--mint-deep)}
+.cards-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch}
+.card{background:#fff;border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:4px;box-shadow:var(--shadow-md)}
+.card-icon{width:48px;height:48px;border-radius:var(--radius-sm);display:grid;place-items:center;margin-bottom:12px}
+.card-icon svg{width:20px;height:20px}
+.card>p{color:var(--muted);font-size:14px;line-height:22px}
+.preview{margin-top:auto;padding-top:24px}
+.preview-box{background:var(--surface);border-radius:var(--radius-sm);padding:16px;display:flex;flex-direction:column;gap:8px;margin-top:auto}
+.preview-head{display:flex;justify-content:space-between;align-items:center}
+.sched-row{background:#fff;display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-radius:6px;box-shadow:var(--shadow-sm);font-size:13px;gap:8px}
+.sched-row b{font-family:var(--head);font-size:12px;font-weight:700}
+.sched-row .day{font-size:10px;letter-spacing:.6px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-right:6px}
+.progress-item{display:flex;flex-direction:column;gap:6px}
+.progress-item .row-between span{font-family:var(--head);font-size:12px;font-weight:600}
+.progress-item .row-between b{font-family:var(--head);font-size:12px;font-weight:700;color:var(--primary)}
+.progress-item .row-between b.ok{color:var(--mint-ink)}
+.track{background:var(--surface-mid);height:10px;border-radius:999px;overflow:hidden}
+.track span{display:block;height:100%;background:var(--primary);border-radius:999px;transition:width .5s}
+.mini-card{background:#fff;border-radius:12px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;box-shadow:var(--shadow-sm)}
+.mini-card strong{display:block;font-family:var(--head);font-size:14px;font-weight:600}
+.assign-card{background:#fff;border-radius:8px;padding:8px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:4px}
+.assign-card .top{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.assign-card strong{font-family:var(--head);font-size:14px;font-weight:600}
+.assign-card small{color:var(--muted);font-size:13px}
+.tag-course{background:var(--lavender);color:var(--primary);font-family:var(--head);font-weight:700;font-size:11px;padding:2px 6px;border-radius:4px}
+.prio{font-family:var(--head);font-weight:700;font-size:10px;padding:2px 8px;border-radius:4px;letter-spacing:.6px;text-transform:uppercase}
+.prio-high{background:var(--red-bg);color:var(--red-ink)}
+.prio-medium{background:var(--surface-hi);color:var(--muted)}
+.prio-low{background:var(--mint);color:var(--mint-deep)}
+.deadline-item{background:#fff;border-radius:8px;padding:8px;box-shadow:var(--shadow-sm);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.deadline-item strong{display:block;font-family:var(--head);font-size:14px;font-weight:600}
+.deadline-item small{color:var(--muted);font-size:13px}
+.due{font-family:var(--head);font-weight:700;font-size:11px;padding:6px 10px;border-radius:4px;background:var(--surface-hi);color:var(--ink);text-align:right;white-space:nowrap}
+.due.urgent-due{background:var(--red-bg);color:var(--red-ink)}
+.board-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.board-tabs span{background:var(--surface-hi);color:var(--primary);text-align:center;font-family:var(--head);font-weight:700;font-size:10px;letter-spacing:.5px;padding:4px 0;border-radius:4px}
+.board-item{background:#fff;border:0;text-align:left;padding:6px 8px;border-radius:6px;box-shadow:var(--shadow-sm);cursor:pointer;display:flex;flex-direction:column;gap:2px;width:100%;transition:transform .15s}
+.board-item:hover{transform:translateX(2px)}
+.board-item strong{font-family:var(--head);font-size:12px;font-weight:600}
+.board-item small{font-family:var(--head);font-weight:700;font-size:10px;letter-spacing:.5px;text-transform:uppercase}
+.st-pending small{color:var(--muted)}
+.st-in_progress small{color:var(--primary)}
+.st-review small{color:var(--amber-ink)}
+.st-completed strong{text-decoration:line-through;color:var(--muted)}
+.st-completed small{color:var(--mint-ink)}
+.timer-box{gap:10px}
+.subject-input{width:100%;border:1px solid var(--lavender);background:#fff;border-radius:8px;padding:8px 10px;font-size:13px;color:var(--ink);outline:none}
+.subject-input:focus{border-color:var(--primary)}
+.timer-face{background:#fff;border-radius:8px;padding:12px;text-align:center;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:2px}
+.timer-face b{font-family:var(--head);font-size:34px;font-weight:800;color:var(--primary);letter-spacing:-.8px;font-variant-numeric:tabular-nums}
+.timer-face small{color:var(--muted);font-size:12px}
+.timer-actions{display:flex;gap:8px}
+.timer-actions .btn{flex:1}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:130px;padding-top:8px}
+.bar-col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.bar-fill{width:100%;background:var(--surface-mid);border-radius:4px 4px 0 0;min-height:6px;transition:height .5s}
+.bar-fill.hi{background:var(--mint-ink)}
+.bar-col small{font-family:var(--head);font-size:11px;font-weight:700;color:var(--muted)}
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.heatmap span{height:24px;border-radius:4px;background:var(--primary)}
+.forms-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.form-card{background:var(--bg);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm)}
+.form-card h3{margin-bottom:4px}
+.form-card input,.form-card select{width:100%;background:#fff;border:1px solid var(--lavender);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--ink);outline:none}
+.form-card input:focus,.form-card select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(53,37,205,.12)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field-row select{grid-column:1/-1}
+.closing{padding:112px 0;overflow:hidden}
+.closing-glow{position:absolute;width:384px;height:384px;border-radius:50%;filter:blur(64px);top:50%;transform:translateY(-50%);pointer-events:none}
+.closing-glow.a{right:-80px;background:rgba(53,37,205,.1)}
+.closing-glow.b{left:-80px;background:rgba(108,248,187,.2)}
+.closing-card{position:relative;max-width:976px;margin:0 auto;border-radius:24px;padding:64px 104px;text-align:center;color:#fff;background:linear-gradient(154deg,#3525cd 0%,#4f46e5 50%,#4d44e3 100%);box-shadow:0 25px 50px -12px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center}
+.closing-icon{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.15);display:grid;place-items:center;margin-bottom:16px}
+.closing-icon svg{width:22px;height:22px}
+.closing-card h2{color:#fff;font-size:40px}
+.closing-card p{color:var(--lavender);font-size:16px;line-height:26px;margin-top:16px;max-width:768px}
+.closing-card .btn{margin-top:40px;color:var(--primary)}
+.closing-card small{color:var(--lavender);font-size:13px;margin-top:16px;opacity:.9}
+.footer{background:var(--surface);padding:40px 0 24px;box-shadow:0 -1px 4px rgba(0,0,0,.03)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px}
+.footer-brand{display:flex;flex-direction:column;gap:16px}
+.footer-brand p{color:var(--muted);font-size:14px;line-height:22px;max-width:384px}
+.footer h4{font-size:11px;letter-spacing:.55px;color:var(--muted);text-transform:uppercase;margin-bottom:16px;font-weight:700}
+.footer ul{display:flex;flex-direction:column;gap:8px}
+.footer ul a,.footer-links a{color:var(--muted);font-size:14px}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;color:var(--muted);font-size:13px;flex-wrap:wrap;gap:12px}
+.footer-links{display:flex;gap:24px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;box-shadow:var(--shadow-md);transition:transform .3s;z-index:100;max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0)}
+@media (max-width:1100px){.nav{display:none}}
+@media (max-width:960px){
+ .cards-3,.forms-grid,.stats-grid,.mockup-grid{grid-template-columns:1fr}
+ .footer-grid{grid-template-columns:1fr 1fr}
+ .footer-brand{grid-column:1/-1}
+ h1{font-size:44px;line-height:52px;letter-spacing:-1.2px}
+ h2{font-size:32px;line-height:40px}
+ .closing-card{padding:48px 32px}
+ .closing-card h2{font-size:30px}
+}
+@media (max-width:640px){
+ .wrap{padding:0 16px}
+ .topbar-inner{height:64px}
+ .top-actions .link-btn,.brand-text small{display:none}
+ h1{font-size:34px;line-height:40px}
+ h2{font-size:26px;line-height:34px}
+ .section-soft,.section-lavender{padding:72px 0}
+ .hero{padding-bottom:80px}
+ .mockup{padding:16px}
+ .cta-row .btn{width:100%}
+ .field-row{grid-template-columns:1fr}
+ .footer-grid{grid-template-columns:1fr}
+ .closing-card{padding:40px 20px}
+ .closing-card .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top"><span class="brand-mark">SF</span><span class="brand-text"><b>StudentFlow</b><small>PRODUCTIVITY SYSTEM</small></span></a>
+    <nav class="nav">
+      <a href="#schedule">Schedule</a><a href="#assignments">Assignments</a><a href="#study">Study Monitor</a><a href="#features">Features</a><a href="#stats">Testimonials</a>
+    </nav>
+    <div class="top-actions">
+      <a href="#manage" class="link-btn">Log In</a>
+      <a href="#manage" class="btn btn-primary btn-sm">Get Started</a>
+      <span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<section id="stats" class="section-white stats-section">
+  <div class="wrap">
+    <div class="stats-head">
+      <span class="eyebrow center">TRUSTED WORLDWIDE</span>
+      <h2 class="h2-small">Loved by 45,000+ ambitious students across 120+ universities</h2>
+    </div>
+    <div class="stats-grid">
+      <article class="stat-card">
+        <span class="stat-icon bg-lavender"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <b class="stat-num c-primary">4.2 hrs</b><span class="stat-label">average time saved/week</span><small class="stat-sub">Reclaimed from schedule chaos</small>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span>
+        <b class="stat-num" style="color:var(--mint-ink)">94%</b><span class="stat-label">on-time submission rate</span><small class="stat-sub">Zero missed coursework deadlines</small>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon bg-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg></span>
+        <b class="stat-num" style="color:var(--amber-ink)">3.8+</b><span class="stat-label">GPA milestone reach</span><small class="stat-sub">Reported by active users in semester 2</small>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap hero-inner">
+    <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>All-in-one academic workspace</span>
+    <h1>Make Every Study Hour Count.</h1>
+    <p class="hero-sub">Stay organised, keep track of your academic goals, and take control of your study routine — all in one place. From managing your timetable to tracking assignments and monitoring study hours, everything you need to stay on top of college life is just a click away.</p>
+    <div class="cta-row">
+      <a href="#manage" class="btn btn-primary">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="#features" class="btn btn-white">Explore Features</a>
+    </div>
+    <p class="trust-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Free for college students • Setup in under 2 minutes • Instant sync</p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dots"><i class="d-red"></i><i class="d-amber"></i><i class="d-mint"></i><span>STUDENTFLOW • ACADEMIC COCKPIT</span></div>
+        <span class="pill-status"><i></i>Semester Fall 2025</span>
+      </div>
+      <div class="mockup-grid">
+        <div class="mockup-left">
+          <div class="panel">
+            <div class="row-between">
+              <h3 class="h3-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Today's Class Timetable</h3>
+              <span class="tag">LIVE</span>
+            </div>
+            <div id="hero-classes" class="stack"></div>
+          </div>
+          <div class="panel urgent">
+            <span class="urgent-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></span>
+            <div class="grow">
+              <small class="eyebrow red">URGENT DEADLINE</small>
+              <strong id="hero-urgent-title">Loading…</strong>
+              <small id="hero-urgent-sub" class="muted-sm"></small>
+            </div>
+            <span id="hero-urgent-due" class="chip chip-red"></span>
+          </div>
+        </div>
+        <div class="panel focus">
+          <div class="row-between">
+            <small class="eyebrow">ACTIVE STUDY MONITOR</small>
+            <span class="chip chip-mint"><i class="dot"></i>Running</span>
+          </div>
+          <h3 class="focus-title">Autonomous Deep Work</h3>
+          <small class="muted-sm">Focus Sprint • Macroeconomics Revision</small>
+          <div class="ring-wrap">
+            <svg class="ring" viewBox="0 0 144 144"><circle cx="72" cy="72" r="64" class="ring-track"/><circle cx="72" cy="72" r="64" class="ring-fill"/></svg>
+            <div class="ring-label"><b id="hero-logged">0m</b><small>LOGGED TODAY</small></div>
+          </div>
+          <span class="goal-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 17l6-6 4 4 8-8"/></svg>82% Weekly Goal Complete</span>
+          <button class="btn btn-primary btn-block" id="hero-pause" type="button">
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><span id="hero-pause-label">Pause Study Session</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="features"></div>
+
+<section id="schedule" class="section-soft">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">01 / SCHEDULE</span>
+      <h2>Your Schedule, Your Way.</h2>
+      <p class="lead">A well-planned day makes studying easier. Keep all your academic activities organised with a schedule that helps you know what needs to be done and when.</p>
+      <span class="tagline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Plan ahead. Stay prepared. Never miss a thing.</span>
+    </div>
+    <div class="cards-3">
+      <article class="card">
+        <span class="card-icon bg-lavender"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+        <h3>Class Timetable</h3>
+        <p>Organise your daily classes and create a clear picture of your academic routine.</p>
+        <div class="preview-box"><div id="schedule-list" class="stack-sm"></div></div>
+      </article>
+      <article class="card">
+        <span class="card-icon bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h9"/></svg></span>
+        <h3>Pending Syllabus</h3>
+        <p>Keep track of unfinished chapters and topics so nothing gets left behind.</p>
+        <div class="preview-box"><div id="syllabus-list" class="stack"></div></div>
+      </article>
+      <article class="card">
+        <span class="card-icon bg-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h10v6"/><path d="M4 20h16"/><path d="M10 14l4 4-4 4"/></svg></span>
+        <h3>Upcoming Exams</h3>
+        <p>Stay prepared by keeping important exam dates and deadlines right in front of you.</p>
+        <div class="preview-box"><div id="exam-list" class="stack-sm"></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="assignments" class="section-lavender">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">02 / ASSIGNMENTS</span>
+      <h2>Never Let an Assignment Catch You Off Guard.</h2>
+      <p class="lead">Assignments can pile up quickly. Keep everything organised in one place and know exactly what needs your attention.</p>
+      <span class="tagline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Less last-minute stress, more time to do your best work.</span>
+    </div>
+    <div class="cards-3">
+      <article class="card">
+        <span class="card-icon bg-lavender"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h10M4 12h6M4 18h8"/><path d="M16 17l5-5 2 2-5 5h-2z"/></svg></span>
+        <h3>Assignment Name</h3>
+        <p>Add and manage all your academic assignments.</p>
+        <div class="preview-box"><div id="assign-list" class="stack-sm"></div></div>
+      </article>
+      <article class="card">
+        <span class="card-icon bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3L2 6M19 3l3 3"/></svg></span>
+        <h3>Deadline Tracker</h3>
+        <p>Keep track of submission dates and know which deadlines are approaching.</p>
+        <div class="preview-box">
+          <div class="preview-head"><small class="eyebrow">CALENDAR SYNC</small><small class="c-mint-ink">Synced with Google Cal</small></div>
+          <div id="deadline-list" class="stack-sm"></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="card-icon bg-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg></span>
+        <h3>Task Management</h3>
+        <p>Stay organised by keeping an eye on your pending assignments.</p>
+        <div class="preview-box">
+          <div class="board-tabs"><span>IN PROGRESS</span><span>IN REVIEW</span><span>COMPLETED</span></div>
+          <div id="board" class="stack-sm"></div>
+          <small class="muted-sm">Click a task to move it to the next stage.</small>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="study" class="section-soft">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">03 / STUDY MONITOR</span>
+      <h2>Know Where Your Study Hours Go.</h2>
+      <p class="lead">Studying for hours doesn't always mean being productive. Track the time you spend studying and get a better understanding of your daily study habits.</p>
+      <span class="tagline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/></svg>Track your time. Understand your habits. Improve every day.</span>
+    </div>
+    <div class="cards-3">
+      <article class="card">
+        <span class="card-icon bg-lavender"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="7"/><path d="M12 10v4l2 2M10 3h4"/></svg></span>
+        <h3>Study Time Tracking</h3>
+        <p>Record the time you spend studying each day.</p>
+        <div class="preview-box timer-box">
+          <div class="row-between"><small class="eyebrow">POMODORO TIMER</small><span class="chip chip-mint">Active</span></div>
+          <input id="timer-subject" class="subject-input" type="text" placeholder="Subject (e.g. Macroeconomics)" maxlength="120">
+          <div class="timer-face"><b data-timer>00:00:00</b><small>Tap start to begin tracking</small></div>
+          <div class="timer-actions">
+            <button class="btn btn-primary btn-sm" type="button" id="timer-toggle">Start</button>
+            <button class="btn btn-ghost btn-sm" type="button" id="timer-stop">Stop &amp; Save</button>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="card-icon bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+        <h3>Daily Progress</h3>
+        <p>See how much time you've dedicated to your studies.</p>
+        <div class="preview-box">
+          <div class="row-between"><b class="h3-mini-num"><span id="today-total">0m</span> dedicated</b><span class="chip chip-mint">Last 7 days</span></div>
+          <div id="week-bars" class="bars"></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="card-icon bg-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="6"/><path d="M9 16v4l3-1 3 1v-4"/></svg></span>
+        <h3>Productivity Overview</h3>
+        <p>Review your study habits and understand how consistently you're working towards your goals.</p>
+        <div class="preview-box">
+          <div class="row-between">
+            <div><small class="eyebrow">OPTIMAL WINDOW</small><b class="small-strong">Peak Focus: 9:00 AM - 12:00 PM</b></div>
+            <div class="text-right"><b class="c-primary">92%</b><small class="eyebrow">Focus Score</small></div>
+          </div>
+          <small class="eyebrow">CONSISTENCY HEATMAP</small>
+          <div id="heatmap" class="heatmap"></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="manage" class="section-white">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GET STARTED</span>
+      <h2>Add to your planner.</h2>
+      <p class="lead">Everything you enter here is saved and appears in the sections above.</p>
+    </div>
+    <div class="forms-grid">
+      <form id="form-course" class="form-card">
+        <h3>Add a class</h3>
+        <input name="name" placeholder="Course name, e.g. CS 201: Algorithms" required>
+        <input name="room" placeholder="Room (optional)">
+        <input name="instructor" placeholder="Instructor (optional)">
+        <div class="field-row">
+          <select name="day_of_week" required>
+            <option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="7">Sunday</option>
+          </select>
+          <input name="start_time" type="time" required>
+          <input name="end_time" type="time" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Save class</button>
+      </form>
+      <form id="form-assignment" class="form-card">
+        <h3>Add an assignment</h3>
+        <input name="title" placeholder="Assignment name" required>
+        <input name="course_name" placeholder="Course, e.g. ECON 202">
+        <div class="field-row">
+          <input name="deadline" type="date" required>
+          <select name="priority"><option value="high">High priority</option><option value="medium" selected>Medium</option><option value="low">Low</option></select>
+        </div>
+        <button class="btn btn-primary" type="submit">Save assignment</button>
+      </form>
+      <form id="form-exam" class="form-card">
+        <h3>Schedule an exam</h3>
+        <input name="course_name" placeholder="Course, e.g. Organic Chemistry" required>
+        <input name="title" placeholder="Exam title, e.g. Midterm" required>
+        <input name="exam_date" type="date" required>
+        <button class="btn btn-primary" type="submit">Save exam</button>
+      </form>
+      <form id="form-topic" class="form-card">
+        <h3>Add a syllabus topic</h3>
+        <input name="course_name" placeholder="Course name" required>
+        <input name="topic" placeholder="Chapter or topic" required>
+        <select name="completed"><option value="0">Still pending</option><option value="1">Already completed</option></select>
+        <button class="btn btn-primary" type="submit">Save topic</button>
+      </form>
+      <form id="form-session" class="form-card">
+        <h3>Log a study session</h3>
+        <input name="subject" placeholder="Subject">
+        <input name="minutes" type="number" min="1" max="600" placeholder="Minutes studied" required>
+        <button class="btn btn-primary" type="submit">Log session</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section-lavender closing">
+  <div class="closing-glow a"></div>
+  <div class="closing-glow b"></div>
+  <div class="wrap">
+    <div class="closing-card">
+      <span class="closing-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="M9 14.5L7 22l5-2 5 2-2-7.5"/></svg></span>
+      <h2>A Better Study Routine Starts Here.</h2>
+      <p>Your academic life doesn't have to feel overwhelming. Bring your timetable, assignments, deadlines and study progress together in one place. Start organising your day and make every study session count.</p>
+      <a href="#manage" class="btn btn-white">Get Started Today <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <small>Free for students • No credit card required • Syncs across all devices</small>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand"><span class="brand-mark">SF</span><span class="brand-text"><b>StudentFlow</b></span></div>
+        <p>Study smarter. Stay organised. Make progress. The unified productivity and focus system crafted for modern academic rigor.</p>
+        <span class="tagline mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Empowering 50,000+ Students Worldwide</span>
+      </div>
+      <div><h4>PLATFORM</h4><ul><li><a href="#schedule">Schedule</a></li><li><a href="#assignments">Assignments</a></li><li><a href="#study">Study Monitor</a></li><li><a href="#features">Features</a></li></ul></div>
+      <div><h4>RESOURCES</h4><ul><li><a href="#">Study Guides</a></li><li><a href="#schedule">Syllabus Planner</a></li><li><a href="#stats">Student Stories</a></li><li><a href="#">Productivity Blog</a></li></ul></div>
+      <div><h4>COMPANY &amp; LEGAL</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Student Portal</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 StudentFlow Systems Inc. All rights reserved.</span>
+      <span class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============ Data layer ============
+   Saved in the browser (localStorage) so this file works by double-clicking it.
+   Same fields as the MySQL tables in schema.sql. */
+const KEY = "studentflow:v1";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const todayStr = () => new Date().toISOString().slice(0, 10);
+const uid = (rows) => (rows.reduce((m, r) => Math.max(m, r.id), 0) + 1);
+const DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const STATUS_LABEL = {pending:"Pending", in_progress:"In progress", review:"In review", completed:"Completed"};
+const NEXT_STATUS = {pending:"in_progress", in_progress:"review", review:"completed", completed:"pending"};
+const todayIdx = ((new Date().getDay() + 6) % 7) + 1;
+
+function daysFromNow(n) { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
+
+function seed() {
+  return {
+    courses: [
+      {id:1, name:"CS 201: Algorithms", room:"Turing Hall 402", instructor:"Prof. Harrison", day_of_week:todayIdx, start_time:"10:00", end_time:"11:15"},
+      {id:2, name:"MATH 312: Linear Algebra", room:"Euler Center", instructor:"Dr. Aris", day_of_week:todayIdx, start_time:"13:30", end_time:"14:45"},
+      {id:3, name:"Biology 101", room:"Lab 2", instructor:"Dr. Chen", day_of_week:Math.min(todayIdx+1,7), start_time:"09:00", end_time:"10:15"},
+      {id:4, name:"World Literature", room:"Hall B", instructor:"Prof. Lee", day_of_week:Math.min(todayIdx+2,7), start_time:"14:15", end_time:"15:30"},
+    ],
+    topics: [
+      {id:1, course_name:"Linear Algebra", topic:"Eigenvalues", completed:1},
+      {id:2, course_name:"Linear Algebra", topic:"Orthogonal bases", completed:0},
+      {id:3, course_name:"Organic Synthesis", topic:"Grignard reactions", completed:1},
+      {id:4, course_name:"Organic Synthesis", topic:"Aldol condensation", completed:0},
+    ],
+    exams: [
+      {id:1, course_name:"Organic Chemistry", title:"Midterm", exam_date:daysFromNow(5)},
+      {id:2, course_name:"Data Structures & OOP", title:"Finals week", exam_date:daysFromNow(18)},
+    ],
+    assignments: [
+      {id:1, title:"Graph Theory Research Paper", course_name:"CS 301", priority:"high", status:"in_progress", deadline:daysFromNow(9)},
+      {id:2, title:"Database Schema Design", course_name:"CS 340", priority:"high", status:"pending", deadline:daysFromNow(2)},
+      {id:3, title:"Fiscal Policy Problem Set 4", course_name:"ECON 202", priority:"medium", status:"pending", deadline:daysFromNow(4)},
+      {id:4, title:"Ethics Essay Submission", course_name:"PHIL 110", priority:"medium", status:"review", deadline:daysFromNow(1)},
+      {id:5, title:"Chem Quiz Submission", course_name:"CHEM 201", priority:"low", status:"completed", deadline:daysFromNow(-2)},
+    ],
+    sessions: [
+      {id:1, subject:"Macroeconomics", session_date:daysFromNow(-6), duration_seconds:5400},
+      {id:2, subject:"Algorithms", session_date:daysFromNow(-5), duration_seconds:7200},
+      {id:3, subject:"Linear Algebra", session_date:daysFromNow(-4), duration_seconds:3600},
+      {id:4, subject:"Organic Chemistry", session_date:daysFromNow(-3), duration_seconds:9000},
+      {id:5, subject:"Literature", session_date:daysFromNow(-2), duration_seconds:2700},
+      {id:6, subject:"Algorithms", session_date:daysFromNow(-1), duration_seconds:6300},
+    ],
+  };
+}
+
+let db = JSON.parse(localStorage.getItem(KEY) || "null") || seed();
+const save = () => localStorage.setItem(KEY, JSON.stringify(db));
+
+/* ============ Helpers ============ */
+function daysLeft(iso) {
+  const [y,m,d] = iso.split("-").map(Number);
+  const due = new Date(y, m-1, d);
+  const t = new Date(); t.setHours(0,0,0,0);
+  return Math.round((due - t) / 86400000);
+}
+function dueText(n) {
+  if (n < 0) return "Overdue";
+  if (n === 0) return "Due today";
+  if (n === 1) return "Due tomorrow";
+  return `Due in ${n} days`;
+}
+function fmtDuration(sec) {
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
+  return h && m ? `${h}h ${m}m` : h ? `${h}h` : `${m}m`;
+}
+function fmtHMS(sec) {
+  const s = Math.max(0, Math.floor(sec));
+  return [Math.floor(s/3600), Math.floor((s%3600)/60), s%60].map(n => String(n).padStart(2,"0")).join(":");
+}
+function toast(msg) {
+  const t = $("#toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._id); toast._id = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+/* ============ Renderers ============ */
+function renderCourses() {
+  const today = db.courses.filter(c => c.day_of_week === todayIdx).sort((a,b)=>a.start_time.localeCompare(b.start_time));
+  $("#hero-classes").innerHTML = today.slice(0,2).map((c,i) => `
+    <div class="class-row ${i===0?"current":""}">
+      <div class="grow"><strong>${esc(c.name)}</strong><small>${esc(c.room)}${c.instructor?" • "+esc(c.instructor):""}</small></div>
+      <div class="when"><span class="time-pill">${esc(c.start_time)}</span></div>
+    </div>`).join("") || `<p class="muted">No classes today.</p>`;
+
+  const week = [...db.courses].sort((a,b)=> a.day_of_week-b.day_of_week || a.start_time.localeCompare(b.start_time));
+  $("#schedule-list").innerHTML = week.slice(0,5).map(c => `
+    <div class="sched-row"><div><span class="day">${DAYS[c.day_of_week-1]}</span><b>${esc(c.name)}</b></div><span>${esc(c.start_time)}</span></div>`).join("")
+    || `<p class="muted">Add a class below to build your timetable.</p>`;
+}
+
+function renderSyllabus() {
+  const groups = {};
+  db.topics.forEach(t => {
+    const g = groups[t.course_name] ||= {course_name:t.course_name, done:0, total:0};
+    g.total++; g.done += t.completed ? 1 : 0;
+  });
+  const rows = Object.values(groups);
+  $("#syllabus-list").innerHTML = rows.length ? rows.slice(0,3).map(r => {
+    const pct = r.total ? Math.round(r.done*100/r.total) : 0;
+    return `<div class="progress-item">
+      <div class="row-between"><span>${esc(r.course_name)}</span><b class="${pct>=80?"ok":""}">${r.done}/${r.total} (${pct}%)</b></div>
+      <div class="track"><span style="width:${pct}%"></span></div></div>`;
+  }).join("") : `<p class="muted">Add syllabus topics to track progress.</p>`;
+}
+
+function renderExams() {
+  const upcoming = db.exams.filter(e => daysLeft(e.exam_date) >= 0).sort((a,b)=>a.exam_date.localeCompare(b.exam_date));
+  $("#exam-list").innerHTML = upcoming.slice(0,3).map(e => {
+    const d = daysLeft(e.exam_date);
+    return `<div class="mini-card"><div><small class="eyebrow red">${esc(e.title)}</small><strong>${esc(e.course_name)}</strong></div>
+      <span class="chip ${d<=7?"chip-red":"chip-blue"}">${d===0?"Today":d+" Days Left"}</span></div>`;
+  }).join("") || `<p class="muted">No upcoming exams.</p>`;
+}
+
+function renderAssignments() {
+  const open = db.assignments.filter(a => a.status !== "completed").sort((a,b)=>a.deadline.localeCompare(b.deadline));
+  const u = open[0];
+  $("#hero-urgent-title").textContent = u ? u.title : "Nothing urgent";
+  $("#hero-urgent-sub").textContent = u ? (u.course_name || "") : "You're all caught up.";
+  $("#hero-urgent-due").textContent = u ? dueText(daysLeft(u.deadline)) : "";
+  $("#hero-urgent-due").style.display = u ? "" : "none";
+
+  $("#assign-list").innerHTML = open.slice(0,2).map(a => `
+    <div class="assign-card"><div class="top"><span class="tag-course">${esc(a.course_name||"GENERAL")}</span><span class="prio prio-${a.priority}">${esc(a.priority)}</span></div>
+    <strong>${esc(a.title)}</strong><small>Due ${esc(a.deadline)}</small></div>`).join("")
+    || `<p class="muted">No open assignments. Add one below.</p>`;
+
+  $("#deadline-list").innerHTML = open.slice(0,3).map(a => {
+    const d = daysLeft(a.deadline);
+    return `<div class="deadline-item"><div><strong>${esc(a.title)}</strong><small>${esc(a.course_name||"General")}</small></div>
+      <span class="due ${d<=2?"urgent-due":""}">${dueText(d)}</span></div>`;
+  }).join("") || `<p class="muted">No deadlines coming up.</p>`;
+
+  $("#board").innerHTML = db.assignments.slice(0,5).map(a => `
+    <button class="board-item st-${a.status}" type="button" data-advance="${a.id}">
+      <strong>${esc(a.title)}</strong><small>${STATUS_LABEL[a.status]} • tap to advance</small></button>`).join("");
+}
+
+function renderStudy() {
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0,10);
+    const seconds = db.sessions.filter(s => s.session_date === key).reduce((t,s)=>t+s.duration_seconds,0);
+    days.push({key, label: d.toLocaleDateString("en",{weekday:"short"}).charAt(0), seconds});
+  }
+  const max = Math.max(1, ...days.map(d=>d.seconds));
+  const today = days[6].seconds;
+  const week = days.reduce((t,d)=>t+d.seconds,0);
+  $("#today-total").textContent = fmtDuration(today);
+  $("#hero-logged").textContent = fmtDuration(today);
+  $("#week-bars").innerHTML = days.map((d,i) => {
+    const h = d.seconds ? Math.max(8, Math.round(d.seconds/max*100)) : 4;
+    return `<div class="bar-col"><div class="bar-fill ${i===6?"hi":""}" style="height:${h}%" title="${fmtDuration(d.seconds)}"></div><small>${d.label}</small></div>`;
+  }).join("");
+  $("#heatmap").innerHTML = days.map(d => `<span style="opacity:${(d.seconds?0.25+d.seconds/max*0.75:0.1).toFixed(2)}" title="${fmtDuration(d.seconds)}"></span>`).join("");
+  $("#hero-ring-note") && ($("#hero-ring-note").textContent = fmtDuration(week));
+}
+
+function renderAll() { renderCourses(); renderSyllabus(); renderExams(); renderAssignments(); renderStudy(); }
+
+/* ============ Study timer ============ */
+const timer = {running:false, startedAt:0, base:0};
+const elapsed = () => timer.base + (timer.running ? (Date.now()-timer.startedAt)/1000 : 0);
+
+function renderTimer() {
+  document.querySelectorAll("[data-timer]").forEach(el => el.textContent = fmtHMS(elapsed()));
+  $("#timer-toggle").textContent = timer.running ? "Pause" : timer.base ? "Resume" : "Start";
+  $("#hero-pause-label").textContent = timer.running ? "Pause Study Session" : "Resume Study Session";
+}
+function toggleTimer() {
+  if (timer.running) { timer.base = elapsed(); timer.running = false; }
+  else { timer.startedAt = Date.now(); timer.running = true; }
+  renderTimer();
+}
+function stopTimer() {
+  const seconds = Math.floor(elapsed());
+  timer.running = false; timer.base = 0; renderTimer();
+  if (seconds < 1) return;
+  const subject = $("#timer-subject").value.trim() || "General Study";
+  db.sessions.push({id: uid(db.sessions), subject, session_date: todayStr(), duration_seconds: seconds});
+  save(); renderStudy();
+  toast(`Saved ${fmtDuration(seconds)} of study`);
+}
+
+/* ============ Actions & forms ============ */
+document.addEventListener("click", (e) => {
+  const item = e.target.closest("[data-advance]");
+  if (!item) return;
+  const a = db.assignments.find(x => x.id === Number(item.dataset.advance));
+  if (!a) return;
+  a.status = NEXT_STATUS[a.status];
+  save(); renderAssignments();
+});
+
+function bindForm(id, build, message) {
+  const form = document.getElementById(id);
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const d = Object.fromEntries(new FormData(form));
+    const err = build(d);
+    if (err) return toast(err);
+    save(); form.reset(); renderAll(); toast(message);
+  });
+}
+
+bindForm("form-course", (d) => {
+  if (d.end_time <= d.start_time) return "End time must be after start time";
+  db.courses.push({id:uid(db.courses), name:d.name, room:d.room||"", instructor:d.instructor||"",
+    day_of_week:Number(d.day_of_week), start_time:d.start_time, end_time:d.end_time});
+}, "Class added to your timetable");
+
+bindForm("form-assignment", (d) => {
+  db.assignments.push({id:uid(db.assignments), title:d.title, course_name:d.course_name||"",
+    priority:d.priority, status:"pending", deadline:d.deadline});
+}, "Assignment saved");
+
+bindForm("form-exam", (d) => {
+  db.exams.push({id:uid(db.exams), course_name:d.course_name, title:d.title, exam_date:d.exam_date});
+}, "Exam scheduled");
+
+bindForm("form-topic", (d) => {
+  db.topics.push({id:uid(db.topics), course_name:d.course_name, topic:d.topic, completed:d.completed==="1"?1:0});
+}, "Syllabus topic saved");
+
+bindForm("form-session", (d) => {
+  const minutes = Number(d.minutes);
+  if (!(minutes > 0)) return "Enter a positive number of minutes";
+  db.sessions.push({id:uid(db.sessions), subject:d.subject||"General Study", session_date:todayStr(), duration_seconds:minutes*60});
+}, "Study session logged");
+
+$("#timer-toggle").addEventListener("click", toggleTimer);
+$("#hero-pause").addEventListener("click", toggleTimer);
+$("#timer-stop").addEventListener("click", stopTimer);
+setInterval(() => { if (timer.running) renderTimer(); }, 1000);
+
+renderAll();
+renderTimer();
+</script>
+</body>
+</html>
